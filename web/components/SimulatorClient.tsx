@@ -576,8 +576,9 @@ export default function SimulatorClient({ projectId, onSaved }: Props) {
                 rateDelta={rateDelta}
                 biz={activeFormatLabel}
                 corridor={corridor.label}
-                onExportCSV={exportCSV}
-                onPrint={handlePrint}
+                isProUser={isProUser}
+                onExportCSV={handleExportCSV}
+                onPrint={handleExportPDF}
                 onShare={handleShare}
                 copied={copied}
               />
@@ -697,6 +698,7 @@ function RealtimeResultsPanel({
   rateDelta,
   biz,
   corridor,
+  isProUser,
   onExportCSV,
   onPrint,
   onShare,
@@ -706,6 +708,7 @@ function RealtimeResultsPanel({
   rateDelta: number;
   biz: string;
   corridor: string;
+  isProUser?: boolean;
   onExportCSV: () => void;
   onPrint: () => void;
   onShare: () => void;
@@ -740,17 +743,27 @@ function RealtimeResultsPanel({
         <div className="flex items-center gap-2 flex-wrap">
           <button
             onClick={onExportCSV}
-            className="px-3 py-1.5 rounded-xl bg-white/10 hover:bg-white/15 text-xs font-mono font-bold text-white flex items-center gap-1.5 border border-white/15 transition-all shadow-sm"
-            title="Download CSV report"
+            className="px-3 py-1.5 rounded-xl bg-white/10 hover:bg-white/15 text-xs font-mono font-bold text-white flex items-center gap-1.5 border border-white/15 transition-all shadow-sm cursor-pointer"
+            title={isProUser ? "Download CSV report" : "Pro Feature: Unlock CSV Feasibility Export"}
           >
             <FaFileCsv className="text-[#00FF85]" /> CSV
+            {!isProUser && (
+              <span className="text-[10px] font-mono bg-[#FFD700]/20 text-[#FFD700] px-1.5 py-0.5 rounded-full border border-[#FFD700]/40 flex items-center gap-0.5 font-bold">
+                <FaLock size={8} /> PRO
+              </span>
+            )}
           </button>
           <button
             onClick={onPrint}
-            className="px-3 py-1.5 rounded-xl bg-white/10 hover:bg-white/15 text-xs font-mono font-bold text-white flex items-center gap-1.5 border border-white/15 transition-all shadow-sm"
-            title="Print or Save PDF"
+            className="px-3 py-1.5 rounded-xl bg-white/10 hover:bg-white/15 text-xs font-mono font-bold text-white flex items-center gap-1.5 border border-white/15 transition-all shadow-sm cursor-pointer"
+            title={isProUser ? "Print or Save PDF" : "Pro Feature: Unlock Investor PDF Export"}
           >
             <FaPrint className="text-[#38BDF8]" /> PDF
+            {!isProUser && (
+              <span className="text-[10px] font-mono bg-[#FFD700]/20 text-[#FFD700] px-1.5 py-0.5 rounded-full border border-[#FFD700]/40 flex items-center gap-0.5 font-bold">
+                <FaLock size={8} /> PRO
+              </span>
+            )}
           </button>
           <button
             onClick={onShare}
