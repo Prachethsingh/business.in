@@ -1,9 +1,13 @@
+"use client";
+
 import Link from "next/link";
-import { FaCompass } from "react-icons/fa";
+import { CookiePreferencesModal, openCookiePreferences } from "@/components/ui/CookiePreferencesModal";
 
 export function Footer() {
   return (
-    <footer
+    <>
+      <footer
+
       className="py-14 px-6 sm:px-8 lg:px-12 border-t"
       style={{
         borderColor: "rgba(255,255,255,0.15)",
@@ -31,24 +35,50 @@ export function Footer() {
           </div>
 
           
-          <nav className="flex flex-wrap gap-x-6 gap-y-3 text-sm" aria-label="Footer navigation">
-            {[
-              { label: "Features", href: "/#features" },
-              { label: "How It Works", href: "/#how-it-works" },
-              { label: "FAQ", href: "/#faq" },
-              { label: "Simulator Studio", href: "/dashboard" },
-              { label: "Create Account", href: "/register" },
-              { label: "Sign In", href: "/login" },
-              { label: "llms.txt", href: "/llms.txt" },
-            ].map((link) => (
-              <a
-                key={link.label}
-                href={link.href}
-                className="text-white hover:text-[#00FF85] transition-colors py-1.5 min-h-[32px] inline-flex items-center font-semibold"
-              >
-                {link.label}
-              </a>
-            ))}
+          <nav className="flex flex-wrap gap-x-6 gap-y-3 text-sm items-center" aria-label="Footer navigation">
+            <Link
+              href="/#features"
+              className="text-white hover:text-[#00FF85] transition-colors py-1.5 min-h-[32px] inline-flex items-center font-semibold"
+            >
+              Features
+            </Link>
+            <Link
+              href="/#how-it-works"
+              className="text-white hover:text-[#00FF85] transition-colors py-1.5 min-h-[32px] inline-flex items-center font-semibold"
+            >
+              How It Works
+            </Link>
+            <Link
+              href="/#faq"
+              className="text-white hover:text-[#00FF85] transition-colors py-1.5 min-h-[32px] inline-flex items-center font-semibold"
+            >
+              FAQ
+            </Link>
+            <Link
+              href="/dashboard"
+              className="text-white hover:text-[#00FF85] transition-colors py-1.5 min-h-[32px] inline-flex items-center font-semibold"
+            >
+              Simulator Studio
+            </Link>
+            <Link
+              href="/privacy"
+              className="text-white hover:text-[#00FF85] transition-colors py-1.5 min-h-[32px] inline-flex items-center font-semibold"
+            >
+              Privacy
+            </Link>
+            <Link
+              href="/terms"
+              className="text-white hover:text-[#00FF85] transition-colors py-1.5 min-h-[32px] inline-flex items-center font-semibold"
+            >
+              Site terms
+            </Link>
+            <button
+              type="button"
+              onClick={() => openCookiePreferences()}
+              className="text-white hover:text-[#00FF85] transition-colors py-1.5 min-h-[32px] inline-flex items-center font-semibold cursor-pointer text-left bg-transparent border-none p-0"
+            >
+              Cookie Preferences
+            </button>
           </nav>
         </div>
 
@@ -67,5 +97,7 @@ export function Footer() {
         </div>
       </div>
     </footer>
-  );
+    <CookiePreferencesModal />
+  </>
+);
 }
