@@ -67,7 +67,7 @@ export function StatsSection() {
                 come alive
               </span>
             </h2>
-            <p className="mt-3 text-sm sm:text-base font-sans text-slate-100 leading-relaxed">
+            <p className="mt-3 text-sm sm:text-base font-sans text-white leading-relaxed">
               Every simulation runs 10,000 Monte Carlo iterations to give you an institutional-grade probability distribution — not a single guess. Test rent, footfall, and ticket sizes before investing capital.
             </p>
 
@@ -98,7 +98,7 @@ export function StatsSection() {
                   <div className="text-xs font-bold text-white font-mono">
                     Indiranagar 100ft Rd · Sample Audit
                   </div>
-                  <div className="text-[11px] text-slate-200">
+                  <div className="text-[11px] text-white font-medium">
                     Specialty Café & Bakery · 10,000 Runs
                   </div>
                 </div>
@@ -111,7 +111,7 @@ export function StatsSection() {
             {/* 12-Month Ramp-up Bar Visualization */}
             <div>
               <div className="flex justify-between items-center text-xs font-mono mb-3">
-                <span className="text-white font-semibold">12-Month Revenue Growth Ramp</span>
+                <span className="text-white font-bold">12-Month Revenue Growth Ramp</span>
                 <span className="text-[#38BDF8] font-bold">Target: ₹2.45L/mo</span>
               </div>
 
@@ -126,7 +126,7 @@ export function StatsSection() {
                         background: idx >= 7 ? "linear-gradient(180deg, #00FF85 0%, #1E90FF 100%)" : "rgba(255,255,255,0.25)",
                       }}
                     />
-                    <span className="text-[9px] font-mono text-slate-200 group-hover:text-white font-semibold">
+                    <span className="text-[10px] font-mono text-white group-hover:text-[#00FF85] font-bold">
                       {item.month}
                     </span>
                     {/* Tooltip on hover */}
@@ -141,19 +141,19 @@ export function StatsSection() {
             {/* 3-Tier Scenario Summary */}
             <div className="grid grid-cols-3 gap-2.5 pt-1">
               <div className="p-3 rounded-xl bg-white/[0.03] border border-white/10 space-y-1">
-                <span className="text-[10px] font-mono uppercase text-[#FF6B6B] font-semibold">10th % (Worst)</span>
-                <p className="text-xs font-bold font-mono text-white m-0">₹1.45L<span className="text-[10px] text-slate-200">/mo</span></p>
-                <span className="text-[10px] text-slate-200 font-mono font-medium">Break-even: 34m</span>
+                <span className="text-[10px] font-mono uppercase text-[#FFA0A0] font-bold">10th % (Worst)</span>
+                <p className="text-xs font-bold font-mono text-white m-0">₹1.45L<span className="text-[10px] text-white">/mo</span></p>
+                <span className="text-[10px] text-white font-mono font-medium">Break-even: 34m</span>
               </div>
               <div className="p-3 rounded-xl bg-[#00FF85]/[0.06] border border-[#00FF85]/30 space-y-1">
-                <span className="text-[10px] font-mono uppercase text-[#00FF85] font-semibold">50th % (Expected)</span>
-                <p className="text-xs font-bold font-mono text-[#00FF85] m-0">₹2.45L<span className="text-[10px] text-slate-200">/mo</span></p>
+                <span className="text-[10px] font-mono uppercase text-[#00FF85] font-bold">50th % (Expected)</span>
+                <p className="text-xs font-bold font-mono text-[#00FF85] m-0">₹2.45L<span className="text-[10px] text-white">/mo</span></p>
                 <span className="text-[10px] text-white font-mono font-semibold">Break-even: 21m</span>
               </div>
               <div className="p-3 rounded-xl bg-white/[0.03] border border-white/10 space-y-1">
-                <span className="text-[10px] font-mono uppercase text-[#38BDF8] font-semibold">90th % (Best)</span>
-                <p className="text-xs font-bold font-mono text-white m-0">₹3.60L<span className="text-[10px] text-slate-200">/mo</span></p>
-                <span className="text-[10px] text-slate-200 font-mono font-medium">Break-even: 14m</span>
+                <span className="text-[10px] font-mono uppercase text-[#38BDF8] font-bold">90th % (Best)</span>
+                <p className="text-xs font-bold font-mono text-white m-0">₹3.60L<span className="text-[10px] text-white">/mo</span></p>
+                <span className="text-[10px] text-white font-mono font-medium">Break-even: 14m</span>
               </div>
             </div>
 

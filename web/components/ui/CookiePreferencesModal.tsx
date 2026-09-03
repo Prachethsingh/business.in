@@ -76,14 +76,14 @@ export function CookiePreferencesModal() {
               <h2 id="cookie-modal-title" className="text-xl font-bold font-serif text-white m-0">
                 Cookie Preferences
               </h2>
-              <p className="text-xs text-slate-300 font-mono m-0">
+              <p className="text-xs text-slate-100 font-mono m-0">
                 Manage how BUSINESS.IN stores data in your browser
               </p>
             </div>
           </div>
           <button
             onClick={() => setIsOpen(false)}
-            className="text-slate-400 hover:text-white p-1 rounded-lg transition-colors"
+            className="text-white hover:text-[#00FF85] p-1 rounded-lg transition-colors"
             aria-label="Close modal"
           >
             <FaTimes size={18} />
@@ -101,7 +101,7 @@ export function CookiePreferencesModal() {
                   Required
                 </span>
               </div>
-              <p className="text-xs text-slate-300 leading-relaxed m-0">
+              <p className="text-xs text-slate-100 leading-relaxed m-0">
                 Required for core platform security, user authentication sessions, and CSRF protection. Cannot be disabled.
               </p>
             </div>
@@ -120,7 +120,7 @@ export function CookiePreferencesModal() {
                 <FaChartBar className="text-[#38BDF8] text-sm" />
                 <span className="font-bold text-sm text-white">Analytics & Performance</span>
               </div>
-              <p className="text-xs text-slate-300 leading-relaxed m-0">
+              <p className="text-xs text-slate-100 leading-relaxed m-0">
                 Anonymously tracks location simulation compute latency, error rates, and user flow to improve algorithmic accuracy.
               </p>
             </div>
@@ -139,7 +139,7 @@ export function CookiePreferencesModal() {
                 <FaSlidersH className="text-[#FFD700] text-sm" />
                 <span className="font-bold text-sm text-white">Functional Preferences</span>
               </div>
-              <p className="text-xs text-slate-300 leading-relaxed m-0">
+              <p className="text-xs text-slate-100 leading-relaxed m-0">
                 Remembers your preferred simulation catchment radius, commercial corridor filters, and report formatting choices.
               </p>
             </div>

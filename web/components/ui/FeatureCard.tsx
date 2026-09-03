@@ -63,7 +63,7 @@ export const FeatureCard = forwardRef<HTMLDivElement, FeatureCardProps>(
           </h3>
 
           <p
-            className="text-xs sm:text-sm leading-relaxed text-slate-100 font-sans m-0"
+            className="text-xs sm:text-sm leading-relaxed text-white font-sans m-0"
           >
             {description}
           </p>

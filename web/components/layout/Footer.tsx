@@ -26,10 +26,10 @@ export function Footer() {
                 BUSINESS<span className="text-[#00FF85]">.IN</span>
               </span>
             </Link>
-            <p className="text-sm text-slate-100 font-sans max-w-sm font-normal">
+            <p className="text-sm text-white font-sans max-w-sm font-normal">
               Monte Carlo location intelligence & commercial real estate simulator for Bengaluru.
             </p>
-            <p className="text-xs text-slate-200 font-sans font-normal">
+            <p className="text-xs text-white font-sans font-normal">
               Authored by <strong className="text-white underline decoration-[#00FF85]">BUSINESS.IN Location Intelligence Research Team</strong>
             </p>
           </div>
@@ -83,9 +83,12 @@ export function Footer() {
         </div>
 
         
-        <div className="pt-6 border-t border-white/20 text-xs text-slate-200 font-mono font-medium">
+        <div className="pt-6 border-t border-white/20 text-xs text-white font-mono font-medium flex flex-col sm:flex-row justify-between items-center gap-3">
           <div>
             &copy; {new Date().getFullYear()} BUSINESS.IN · Bengaluru Commercial Real Estate Intelligence.
+          </div>
+          <div>
+            Published: <time dateTime="2026-08-30" className="text-white font-semibold">August 30, 2026</time>
           </div>
         </div>
       </div>

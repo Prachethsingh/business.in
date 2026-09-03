@@ -44,7 +44,7 @@ export function HeroSection() {
 
         
         <p
-          className="mb-10 max-w-2xl leading-relaxed text-base sm:text-xl text-[#F1F5F9] font-sans"
+          className="mb-10 max-w-2xl leading-relaxed text-base sm:text-xl text-white font-sans"
         >
           Monte Carlo simulations, traffic intelligence, competitor analysis & financial
           projections — all in one interactive 3D platform. Built for Bengaluru.
@@ -80,7 +80,7 @@ export function HeroSection() {
               >
                 {stat.value}
               </span>
-              <span className="text-[#E2E8F0] font-medium">{stat.label}</span>
+              <span className="text-white font-medium">{stat.label}</span>
             </div>
           ))}
         </div>
