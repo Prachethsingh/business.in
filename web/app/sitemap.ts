@@ -1,56 +1,75 @@
 import { MetadataRoute } from "next";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = process.env.NEXT_PUBLIC_APP_URL ?? "https://business.in";
+  const baseUrl = process.env.NEXT_PUBLIC_APP_URL ?? "https://business-in.onrender.com";
+  const now = new Date();
 
   return [
     {
       url: baseUrl,
-      lastModified: new Date(),
-      changeFrequency: "weekly",
+      lastModified: now,
+      changeFrequency: "daily",
       priority: 1.0,
     },
     {
       url: `${baseUrl}/dashboard`,
-      lastModified: new Date(),
+      lastModified: now,
+      changeFrequency: "daily",
+      priority: 0.95,
+    },
+    {
+      url: `${baseUrl}/analysis`,
+      lastModified: now,
       changeFrequency: "daily",
       priority: 0.9,
     },
     {
-      url: `${baseUrl}/analysis`,
-      lastModified: new Date(),
+      url: `${baseUrl}/features`,
+      lastModified: now,
       changeFrequency: "weekly",
-      priority: 0.9,
+      priority: 0.85,
+    },
+    {
+      url: `${baseUrl}/how-it-works`,
+      lastModified: now,
+      changeFrequency: "weekly",
+      priority: 0.85,
+    },
+    {
+      url: `${baseUrl}/pricing`,
+      lastModified: now,
+      changeFrequency: "weekly",
+      priority: 0.8,
+    },
+    {
+      url: `${baseUrl}/faq`,
+      lastModified: now,
+      changeFrequency: "weekly",
+      priority: 0.8,
     },
     {
       url: `${baseUrl}/billing`,
-      lastModified: new Date(),
+      lastModified: now,
       changeFrequency: "monthly",
-      priority: 0.8,
+      priority: 0.75,
     },
     {
       url: `${baseUrl}/reports`,
-      lastModified: new Date(),
+      lastModified: now,
       changeFrequency: "weekly",
-      priority: 0.8,
+      priority: 0.75,
     },
     {
       url: `${baseUrl}/login`,
-      lastModified: new Date(),
+      lastModified: now,
       changeFrequency: "monthly",
       priority: 0.7,
     },
     {
       url: `${baseUrl}/register`,
-      lastModified: new Date(),
+      lastModified: now,
       changeFrequency: "monthly",
       priority: 0.7,
-    },
-    {
-      url: `${baseUrl}/account`,
-      lastModified: new Date(),
-      changeFrequency: "monthly",
-      priority: 0.6,
     },
   ];
 }
