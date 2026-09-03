@@ -46,6 +46,9 @@ export const metadata: Metadata = {
       "Monte Carlo simulations, traffic intelligence, competitor analysis & financial projections for Bengaluru locations.",
     images: ["https://business.in/og-image.jpg"],
   },
+  verification: {
+    google: "google9eab329ee90bde56",
+  },
 };
 
 export default function RootLayout({
