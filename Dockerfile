@@ -1,4 +1,4 @@
-# Multi-stage production Dockerfile for Google Cloud Run
+# Multi-stage production Dockerfile
 FROM node:20-alpine AS base
 
 # Step 1: Install dependencies
@@ -6,9 +6,9 @@ FROM base AS deps
 RUN apk add --no-cache libc6-compat
 WORKDIR /app
 
-COPY package.json package-lock.json* ./
-COPY web/package.json ./web/
-RUN cd web && npm ci
+COPY package*.json ./
+COPY web/package*.json ./web/
+RUN cd web && npm install --no-audit
 
 # Step 2: Build the Next.js application
 FROM base AS builder
@@ -27,7 +27,6 @@ FROM base AS runner
 WORKDIR /app
 
 ENV NODE_ENV=production
-ENV PORT=8080
 ENV HOSTNAME="0.0.0.0"
 
 RUN addgroup --system --gid 1001 nodejs
@@ -39,6 +38,6 @@ COPY --from=builder --chown=nextjs:nodejs /app/web/.next/static ./web/.next/stat
 
 USER nextjs
 
-EXPOSE 8080
+EXPOSE 8080 10000 3000
 
-CMD ["node", "web/server.js"]
+CMD ["sh", "-c", "if [ -f web/server.js ]; then node web/server.js; else node server.js; fi"]
