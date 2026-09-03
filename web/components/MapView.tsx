@@ -5,13 +5,15 @@ import { MapContainer, TileLayer, Marker, Circle, useMap } from "react-leaflet";
 import type { LatLngExpression } from "leaflet";
 import L from "leaflet";
 
-const markerIcon = L.icon({
-  iconUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png",
-  iconRetinaUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png",
-  shadowUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png",
-  iconSize: [25, 41],
-  iconAnchor: [12, 41],
-});
+const createCustomPin = () => {
+  if (typeof window === "undefined") return undefined;
+  return L.divIcon({
+    className: "custom-map-pin",
+    html: `<div style="width:36px;height:36px;background:#00FF85;border-radius:50%;border:3px solid #000;box-shadow:0 0 16px rgba(0,255,133,0.9);display:flex;align-items:center;justify-content:center;font-size:18px;cursor:grab;">📍</div>`,
+    iconSize: [36, 36],
+    iconAnchor: [18, 36],
+  });
+};
 
 type Props = {
   lat: number;
@@ -54,7 +56,7 @@ export default function MapView({ lat, lng, radiusKm, onPinMove }: Props) {
         />
         <Marker
           position={center}
-          icon={markerIcon}
+          icon={createCustomPin()}
           draggable
           eventHandlers={{
             dragend: (e) => {

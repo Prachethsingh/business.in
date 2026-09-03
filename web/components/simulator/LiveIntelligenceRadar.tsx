@@ -121,7 +121,7 @@ export default function LiveIntelligenceRadar({
         </div>
 
         <div className="hidden sm:flex flex-col items-end">
-          <span className="text-[11px] font-mono text-white/70 uppercase">Radar Radius</span>
+          <span className="text-[11px] font-mono text-white font-medium uppercase">Radar Radius</span>
           <span className="text-sm font-black font-mono text-[#38BDF8] bg-[#38BDF8]/15 px-3 py-1 rounded-xl border border-[#38BDF8]/30">
             {radiusKm.toFixed(1)} km Catchment
           </span>
@@ -203,7 +203,7 @@ export default function LiveIntelligenceRadar({
           </div>
 
           <div className="mt-3 text-center">
-            <span className="text-[11px] font-mono text-white/70 block uppercase tracking-wider">
+            <span className="text-[11px] font-mono text-white block uppercase tracking-wider font-medium">
               Active Radar Stream
             </span>
             <strong className="text-sm font-mono font-bold text-[#00FF85]">
@@ -216,7 +216,7 @@ export default function LiveIntelligenceRadar({
         <div className="md:col-span-7 space-y-3">
           <div className="grid grid-cols-2 gap-2.5">
             <div className="p-3 rounded-2xl bg-white/[0.04] border border-white/10 hover:border-[#00FF85]/40 transition-all">
-              <span className="text-[11px] font-mono text-white/70 flex items-center gap-1.5 uppercase">
+              <span className="text-[11px] font-mono text-white flex items-center gap-1.5 uppercase font-medium">
                 <FaWalking className="text-[#00FF85]" /> Density Index
               </span>
               <p className="text-base sm:text-lg font-black font-mono text-white mt-1 mb-0">
@@ -228,7 +228,7 @@ export default function LiveIntelligenceRadar({
             </div>
 
             <div className="p-3 rounded-2xl bg-white/[0.04] border border-white/10 hover:border-[#38BDF8]/40 transition-all">
-              <span className="text-[11px] font-mono text-white/70 flex items-center gap-1.5 uppercase">
+              <span className="text-[11px] font-mono text-white flex items-center gap-1.5 uppercase font-medium">
                 <FaSubway className="text-[#38BDF8]" /> Transit Index
               </span>
               <p className="text-base sm:text-lg font-black font-mono text-white mt-1 mb-0">
@@ -237,22 +237,22 @@ export default function LiveIntelligenceRadar({
             </div>
 
             <div className="p-3 rounded-2xl bg-white/[0.04] border border-white/10 hover:border-[#FFD700]/40 transition-all">
-              <span className="text-[11px] font-mono text-white/70 flex items-center gap-1.5 uppercase">
+              <span className="text-[11px] font-mono text-white flex items-center gap-1.5 uppercase font-medium">
                 <FaBuilding className="text-[#FFD700]" /> Tech Workforce
               </span>
               <p className="text-base sm:text-lg font-black font-mono text-white mt-1 mb-0">
                 {demographic.techWorkforce}
-                <span className="text-xs font-normal text-white/70 ml-1 font-sans">of Catchment</span>
+                <span className="text-xs font-normal text-white ml-1 font-sans">of Catchment</span>
               </p>
             </div>
 
             <div className="p-3 rounded-2xl bg-white/[0.04] border border-white/10 hover:border-[#00FF85]/40 transition-all">
-              <span className="text-[11px] font-mono text-white/70 flex items-center gap-1.5 uppercase">
+              <span className="text-[11px] font-mono text-white flex items-center gap-1.5 uppercase font-medium">
                 <FaStoreAlt className="text-[#00FF85]" /> Weekend Surge
               </span>
               <p className="text-base sm:text-lg font-black font-mono text-[#00FF85] mt-1 mb-0">
                 {demographic.weekendSurge}
-                <span className="text-xs font-normal text-white/70 ml-1 font-sans">vs Weekday</span>
+                <span className="text-xs font-normal text-white ml-1 font-sans">vs Weekday</span>
               </p>
             </div>
           </div>
@@ -260,11 +260,11 @@ export default function LiveIntelligenceRadar({
           {/* Median Income & Prime Window Bar */}
           <div className="p-3.5 rounded-2xl bg-gradient-to-r from-white/[0.04] to-white/[0.02] border border-white/15 space-y-2">
             <div className="flex justify-between items-center text-xs font-mono">
-              <span className="text-white/80">Catchment Median Income:</span>
+              <span className="text-white">Catchment Median Income:</span>
               <strong className="text-white font-bold">{demographic.avgIncome}</strong>
             </div>
             <div className="flex justify-between items-center text-xs font-mono">
-              <span className="text-white/80">Peak Traffic Window:</span>
+              <span className="text-white">Peak Traffic Window:</span>
               <span className="text-[#00FF85] font-semibold">{demographic.peakHours}</span>
             </div>
           </div>

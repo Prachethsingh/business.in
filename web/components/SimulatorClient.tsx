@@ -395,9 +395,9 @@ export default function SimulatorClient({ projectId, onSaved }: Props) {
           <div className="lg:col-span-6 space-y-4">
             <div className="glass rounded-3xl p-5 sm:p-6 bg-[#121212]/90 border border-white/15 space-y-4 shadow-xl">
               <div className="flex items-center justify-between pb-2 border-b border-white/10">
-                <h3 className="font-display text-lg sm:text-xl font-black text-white flex items-center gap-2.5 tracking-wide">
+                <h2 className="font-display text-lg sm:text-xl font-black text-white flex items-center gap-2.5 tracking-wide">
                   <FaSlidersH className="text-[#00FF85]" /> Location Parameters
-                </h3>
+                </h2>
                 <span className="text-xs font-mono font-bold text-[#00FF85] bg-[#00FF85]/15 px-3 py-1 rounded-full border border-[#00FF85]/35 shadow-sm">
                   Live Engine Active
                 </span>
@@ -446,8 +446,8 @@ export default function SimulatorClient({ projectId, onSaved }: Props) {
               )}
 
               {subType && subTypeKey !== "custom" && (
-                <div className="py-2 px-3.5 rounded-2xl bg-white/[0.03] border border-white/10 flex items-center justify-between gap-3 text-xs font-mono text-white/80 flex-wrap">
-                  <span className="text-[#CBD5E1] font-medium truncate">{subType.description}</span>
+                <div className="py-2 px-3.5 rounded-2xl bg-white/[0.03] border border-white/10 flex items-center justify-between gap-3 text-xs font-mono text-white flex-wrap">
+                  <span className="text-white font-medium truncate">{subType.description}</span>
                   <div className="flex items-center gap-2 text-[#00FF85] flex-shrink-0 font-bold">
                     <span className="bg-[#00FF85]/15 px-2 py-0.5 rounded-md border border-[#00FF85]/30">Preset</span>
                     <span>CapEx: {paiseToRupeeLabel(subType.defaultInvestmentPaise)}</span>
@@ -735,9 +735,9 @@ function RealtimeResultsPanel({
           <span className="text-xs font-mono text-[#00FF85] uppercase tracking-wider flex items-center gap-1.5 font-bold">
             <span className="w-2 h-2 rounded-full bg-[#00FF85] animate-ping" /> {biz} · {corridor}
           </span>
-          <h4 className="text-xl sm:text-2xl font-black font-display text-white mt-0.5 tracking-tight">
+          <h3 className="text-xl sm:text-2xl font-black font-display text-white mt-0.5 tracking-tight">
             Decision Intelligence
-          </h4>
+          </h3>
         </div>
 
         <div className="flex items-center gap-2 flex-wrap">
@@ -866,7 +866,7 @@ function RealtimeResultsPanel({
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-0.5">
           <div>
-            <div className="flex justify-between text-[10px] font-mono text-white/80 mb-0.5">
+            <div className="flex justify-between text-[10px] font-mono text-white mb-0.5 font-medium">
               <span>Footfall Resilience</span>
               <span style={{ color: color }}>
                 {Math.min(Math.round(rate * 1.08), 98)}% Buffer
@@ -884,7 +884,7 @@ function RealtimeResultsPanel({
           </div>
 
           <div>
-            <div className="flex justify-between text-[10px] font-mono text-white/80 mb-0.5">
+            <div className="flex justify-between text-[10px] font-mono text-white mb-0.5 font-medium">
               <span>Rent Safety</span>
               <span className="text-[#FFD700]">
                 {rate >= 60 ? "Safe (<18%)" : rate >= 40 ? "Moderate (22%)" : "High Risk (>30%)"}
@@ -985,15 +985,15 @@ function ScenarioCard({
       <span className="text-xs font-display uppercase text-white font-black tracking-wider">{label}</span>
       <p className="text-xl sm:text-2xl font-black font-mono text-white m-0 leading-tight tracking-tight">
         {paiseToRupeeLabel(outcome.monthlyRevenuePaise)}
-        <span className="text-xs font-normal text-white/70">/mo</span>
+        <span className="text-xs font-normal text-white">/mo</span>
       </p>
       <div className="flex justify-between text-xs sm:text-sm text-white m-0 font-mono pt-0.5">
-        <span className="text-white/70">Net:</span>
+        <span className="text-white">Net:</span>
         <strong className={outcome.monthlyProfitPaise >= 0 ? "text-[#00FF85] font-black" : "text-[#FFA0A0] font-black"}>
           {paiseToRupeeLabel(outcome.monthlyProfitPaise)}
         </strong>
       </div>
-      <p className="text-xs text-white/70 m-0 font-mono">
+      <p className="text-xs text-white m-0 font-mono font-medium">
         {outcome.breakEvenMonths > 0 ? `Break-even: ${outcome.breakEvenMonths}m` : "No break-even"}
       </p>
     </div>
