@@ -30,6 +30,7 @@ import {
   FaInfoCircle,
   FaExpand,
   FaCompress,
+  FaLock,
 } from "react-icons/fa";
 
 const MapView = dynamic(() => import("@/components/MapView"), { ssr: false });
@@ -88,6 +89,16 @@ export default function SimulatorClient({ projectId, onSaved }: Props) {
   const [copied, setCopied] = useState(false);
   const [upgradeOpen, setUpgradeOpen] = useState(false);
   const [isFullscreen, setIsFullscreen] = useState(false);
+  const [isProUser, setIsProUser] = useState(false);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const proUnlocked = localStorage.getItem("business_in_pro_unlocked");
+      if (proUnlocked === "true") {
+        setIsProUser(true);
+      }
+    }
+  }, []);
 
   const toggleFullscreen = useCallback(() => {
     if (typeof document === "undefined") return;
@@ -258,8 +269,28 @@ export default function SimulatorClient({ projectId, onSaved }: Props) {
     document.body.removeChild(link);
   }
 
-  function handlePrint() {
+  function handleExportCSV() {
+    if (!isProUser) {
+      setUpgradeOpen(true);
+      return;
+    }
+    exportCSV();
+  }
+
+  function handleExportPDF() {
+    if (!isProUser) {
+      setUpgradeOpen(true);
+      return;
+    }
     window.print();
+  }
+
+  function handleSelectCompareTab() {
+    if (!isProUser) {
+      setUpgradeOpen(true);
+      return;
+    }
+    setActiveTab("compare");
   }
 
   function handleShare() {
@@ -301,7 +332,7 @@ export default function SimulatorClient({ projectId, onSaved }: Props) {
             <FaSlidersH size={12} /> Simulator Studio
           </button>
           <button
-            onClick={() => setActiveTab("compare")}
+            onClick={handleSelectCompareTab}
             className={`px-3 py-1.5 rounded-xl text-xs font-medium transition-all flex items-center gap-1.5 min-h-[36px] ${
               activeTab === "compare"
                 ? "bg-[#38BDF8]/20 text-[#38BDF8] border border-[#38BDF8]/40"
@@ -309,6 +340,37 @@ export default function SimulatorClient({ projectId, onSaved }: Props) {
             }`}
           >
             <FaExchangeAlt size={12} /> Corridor Compare
+            {!isProUser && (
+              <span className="ml-1 text-[10px] font-mono bg-[#FFD700]/20 text-[#FFD700] px-1.5 py-0.5 rounded-full border border-[#FFD700]/40 flex items-center gap-0.5 font-bold">
+                <FaLock size={8} /> PRO
+              </span>
+            )}
+          </button>
+          <button
+            onClick={handleExportCSV}
+            className="px-3 py-1.5 rounded-xl bg-white/10 hover:bg-white/15 text-white text-xs font-medium flex items-center gap-1.5 min-h-[36px] border border-white/10 transition-all cursor-pointer"
+            title={isProUser ? "Download Structured CSV Report" : "Pro Feature: Unlock CSV Feasibility Export"}
+          >
+            <FaFileCsv className="text-[#00FF85]" size={13} />
+            <span>Export CSV</span>
+            {!isProUser && (
+              <span className="text-[10px] font-mono bg-[#FFD700]/20 text-[#FFD700] px-1.5 py-0.5 rounded-full border border-[#FFD700]/40 flex items-center gap-0.5 font-bold">
+                <FaLock size={8} /> PRO
+              </span>
+            )}
+          </button>
+          <button
+            onClick={handleExportPDF}
+            className="px-3 py-1.5 rounded-xl bg-white/10 hover:bg-white/15 text-white text-xs font-medium flex items-center gap-1.5 min-h-[36px] border border-white/10 transition-all cursor-pointer"
+            title={isProUser ? "Print or Export Investor PDF" : "Pro Feature: Unlock Investor PDF Export"}
+          >
+            <FaPrint className="text-[#38BDF8]" size={13} />
+            <span>Investor PDF</span>
+            {!isProUser && (
+              <span className="text-[10px] font-mono bg-[#FFD700]/20 text-[#FFD700] px-1.5 py-0.5 rounded-full border border-[#FFD700]/40 flex items-center gap-0.5 font-bold">
+                <FaLock size={8} /> PRO
+              </span>
+            )}
           </button>
           <button
             onClick={() => setUpgradeOpen(true)}

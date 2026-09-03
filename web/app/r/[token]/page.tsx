@@ -8,6 +8,7 @@ import {
   findCorridor,
 } from "@/lib/simulator/data";
 import { runSimulation, type SimulationAssumptions } from "@/lib/simulator/engine";
+import { UpgradeModal } from "@/components/billing/UpgradeModal";
 import {
   FaShareAlt,
   FaPrint,
@@ -15,6 +16,7 @@ import {
   FaCheck,
   FaCompass,
   FaLock,
+  FaCrown,
 } from "react-icons/fa";
 
 function paiseToRupeeLabel(paise: number): string {
@@ -25,6 +27,8 @@ function paiseToRupeeLabel(paise: number): string {
 export default function SharedReportPage({ params }: { params: Promise<{ token: string }> }) {
   const { token } = use(params);
   const [copied, setCopied] = useState(false);
+  const [upgradeOpen, setUpgradeOpen] = useState(false);
+  const [isProUser, setIsProUser] = useState(false);
 
   
   const assumptions: SimulationAssumptions = useMemo(
@@ -106,16 +110,38 @@ export default function SharedReportPage({ params }: { params: Promise<{ token: 
 
           <div className="flex items-center gap-3 flex-wrap">
             <button
-              onClick={exportCSV}
-              className="px-4 py-2 rounded-xl bg-white/10 hover:bg-white/15 text-xs font-mono text-white flex items-center gap-2 border border-white/10 transition-all min-h-[40px]"
+              onClick={() => {
+                if (!isProUser) {
+                  setUpgradeOpen(true);
+                  return;
+                }
+                exportCSV();
+              }}
+              className="px-4 py-2 rounded-xl bg-white/10 hover:bg-white/15 text-xs font-mono text-white flex items-center gap-2 border border-white/10 transition-all min-h-[40px] cursor-pointer"
             >
               <FaFileCsv className="text-[#00FF85]" /> Export CSV
+              {!isProUser && (
+                <span className="text-[10px] font-mono bg-[#FFD700]/20 text-[#FFD700] px-1.5 py-0.5 rounded-full border border-[#FFD700]/40 flex items-center gap-0.5 font-bold">
+                  <FaLock size={8} /> PRO
+                </span>
+              )}
             </button>
             <button
-              onClick={() => window.print()}
-              className="px-4 py-2 rounded-xl bg-white/10 hover:bg-white/15 text-xs font-mono text-white flex items-center gap-2 border border-white/10 transition-all min-h-[40px]"
+              onClick={() => {
+                if (!isProUser) {
+                  setUpgradeOpen(true);
+                  return;
+                }
+                window.print();
+              }}
+              className="px-4 py-2 rounded-xl bg-white/10 hover:bg-white/15 text-xs font-mono text-white flex items-center gap-2 border border-white/10 transition-all min-h-[40px] cursor-pointer"
             >
               <FaPrint className="text-[#38BDF8]" /> Print / PDF
+              {!isProUser && (
+                <span className="text-[10px] font-mono bg-[#FFD700]/20 text-[#FFD700] px-1.5 py-0.5 rounded-full border border-[#FFD700]/40 flex items-center gap-0.5 font-bold">
+                  <FaLock size={8} /> PRO
+                </span>
+              )}
             </button>
             <button
               onClick={handleShare}
@@ -207,6 +233,7 @@ export default function SharedReportPage({ params }: { params: Promise<{ token: 
       </main>
 
       <Footer />
+      <UpgradeModal isOpen={upgradeOpen} onClose={() => setUpgradeOpen(false)} />
     </div>
   );
 }
