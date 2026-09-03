@@ -75,7 +75,7 @@ export function FeaturesSection() {
             </span>
           </h2>
           <p
-            className="mt-3 max-w-2xl mx-auto text-sm sm:text-base text-slate-300 font-sans leading-relaxed"
+            className="mt-3 max-w-2xl mx-auto text-sm sm:text-base text-slate-100 font-sans leading-relaxed"
           >
             From traffic intelligence to financial projections — a complete decision
             engine for business location strategy.

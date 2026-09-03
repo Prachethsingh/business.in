@@ -16,16 +16,16 @@ export const metadata: Metadata = {
   authors: [
     {
       name: "BUSINESS.IN Location Intelligence Research Team",
-      url: "https://business.in",
+      url: "https://business-in.onrender.com",
     },
   ],
   creator: "BUSINESS.IN Location Intelligence Research Team",
   publisher: "BUSINESS.IN",
-  metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL ?? "https://business.in"),
+  metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL ?? "https://business-in.onrender.com"),
   openGraph: {
     type: "website",
     locale: "en_IN",
-    url: process.env.NEXT_PUBLIC_APP_URL ?? "https://business.in",
+    url: process.env.NEXT_PUBLIC_APP_URL ?? "https://business-in.onrender.com",
     siteName: "BUSINESS.IN",
     title: "BUSINESS.IN — AI Business Location Decision Simulator",
     description:
