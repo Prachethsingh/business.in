@@ -16,7 +16,7 @@ export function Navbar() {
         
         <Link href="/" className="flex items-center gap-2.5 text-decoration-none group min-h-[44px]">
           <div className="w-10 h-10 rounded-full overflow-hidden flex items-center justify-center border border-[#00FF85]/50 group-hover:border-[#00FF85] transition-all shadow-lg bg-[#0F172A] p-0.5">
-            <img src="/logo.png" alt="BUSINESS.IN Logo" className="w-full h-full object-contain" width={40} height={40} />
+            <img src="/logo.webp" alt="BUSINESS.IN Logo" className="w-full h-full object-contain" width={40} height={40} />
           </div>
           <div className="flex flex-col">
             <span className="font-bold tracking-tight text-white font-mono text-base">

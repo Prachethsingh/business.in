@@ -20,7 +20,7 @@ export function Footer() {
           <div className="space-y-2">
             <Link href="/" className="flex items-center gap-2.5">
               <div className="w-8 h-8 rounded-full overflow-hidden flex items-center justify-center border border-[#00FF85]/50 shadow-md bg-[#0F172A] p-0.5">
-                <img src="/logo.png" alt="BUSINESS.IN Logo" className="w-full h-full object-contain" width={32} height={32} />
+                <img src="/logo.webp" alt="BUSINESS.IN Logo" className="w-full h-full object-contain" width={32} height={32} />
               </div>
               <span className="text-2xl font-bold font-serif text-white tracking-tight flex items-center gap-1.5">
                 BUSINESS<span className="text-[#00FF85]">.IN</span>

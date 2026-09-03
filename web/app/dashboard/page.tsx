@@ -18,29 +18,29 @@ import {
 } from "react-icons/fa";
 
 export const metadata: Metadata = {
-  title: "Dashboard — BUSINESS.IN",
+  title: "Location Decision Simulator Studio — BUSINESS.IN Bengaluru",
   description:
     "Simulate footfall, revenue, rent ratios, and Monte Carlo probability of viability across prime commercial corridors in Bengaluru for retail, cafes, and clinics.",
   alternates: {
-    canonical: "/dashboard",
+    canonical: process.env.NEXT_PUBLIC_APP_URL ? `${process.env.NEXT_PUBLIC_APP_URL}/dashboard` : "https://business-in.onrender.com/dashboard",
   },
   authors: [
     {
-      name: "Pracheth Singh",
-      url: "https://business.in",
+      name: "BUSINESS.IN Location Intelligence Research Team",
+      url: "https://business-in.onrender.com",
     },
   ],
   openGraph: {
     type: "website",
     locale: "en_IN",
-    url: "/dashboard",
+    url: "https://business-in.onrender.com/dashboard",
     siteName: "BUSINESS.IN",
-    title: "Commercial Location Decision Simulator Studio — BUSINESS.IN",
+    title: "Location Decision Simulator Studio — BUSINESS.IN Bengaluru",
     description:
       "Simulate footfall, revenue, rent ratios, and Monte Carlo probability of viability across prime commercial corridors in Bengaluru for retail, cafes, and clinics.",
     images: [
       {
-        url: "https://business.in/og-image.jpg",
+        url: "https://business-in.onrender.com/og-image.png",
         width: 1200,
         height: 630,
         alt: "BUSINESS.IN Location Simulator Studio",
@@ -49,10 +49,10 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Commercial Location Decision Simulator Studio — BUSINESS.IN",
+    title: "Location Decision Simulator Studio — BUSINESS.IN Bengaluru",
     description:
       "Monte Carlo simulations, traffic intelligence, competitor analysis & financial projections for Bengaluru locations.",
-    images: ["https://business.in/og-image.jpg"],
+    images: ["https://business-in.onrender.com/og-image.png"],
   },
 };
 
@@ -166,6 +166,18 @@ export default async function DashboardPage() {
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
 
+        {/* Semantic H1 Page Heading for AI & Accessibility */}
+        <header className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-2 border-b border-white/10">
+          <div>
+            <h1 className="text-xl sm:text-2xl font-bold font-serif text-white tracking-tight flex items-center gap-2 m-0">
+              <span className="text-[#00FF85]">Location Intelligence</span> Simulator Studio
+            </h1>
+            <p className="text-xs text-white font-sans m-0 mt-0.5">
+              Interactive 3D geospatial feasibility & Monte Carlo financial projection engine for Bengaluru.
+            </p>
+          </div>
+        </header>
+
         
         {!user && (
           <aside className="py-2 px-3.5 rounded-xl bg-gradient-to-r from-[#00FF85]/15 via-[#38BDF8]/10 to-[#121212] border border-[#00FF85]/30 flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs">
@@ -177,7 +189,7 @@ export default async function DashboardPage() {
                 Simulating in <strong>Autonomous Guest Studio Mode</strong>. Sign in to save scenarios.
               </p>
             </div>
-            <Link href="/register" className="flex-shrink-0">
+            <Link href="/register" className="flex-shrink-0 min-h-[32px] inline-flex items-center">
               <span className="text-xs font-mono text-[#00FF85] hover:underline cursor-pointer font-bold">
                 Create Free Account →
               </span>
@@ -192,7 +204,7 @@ export default async function DashboardPage() {
 
         
         <details className="glass rounded-2xl p-4 bg-[#121212] border border-white/15 space-y-4 group">
-          <summary className="flex items-center justify-between cursor-pointer list-none select-none">
+          <summary className="flex items-center justify-between cursor-pointer list-none select-none py-2 min-h-[44px]">
             <div className="flex items-center gap-2">
               <FaBookOpen className="text-[#00FF85]" />
               <h2 className="text-sm font-bold font-serif text-white m-0">
@@ -243,7 +255,7 @@ export default async function DashboardPage() {
 
         
         <details className="glass rounded-2xl p-4 bg-[#121212] border border-white/10 space-y-4 group">
-          <summary className="flex items-center justify-between cursor-pointer list-none select-none">
+          <summary className="flex items-center justify-between cursor-pointer list-none select-none py-2 min-h-[44px]">
             <div className="flex items-center gap-2">
               <FaQuestionCircle className="text-[#00FF85]" />
               <h2 className="text-sm font-bold font-serif text-white m-0">Frequently Asked Questions</h2>
@@ -254,21 +266,21 @@ export default async function DashboardPage() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs font-sans pt-2 border-t border-white/10">
             <div className="p-3 rounded-xl bg-white/5 border border-white/10 space-y-1.5">
               <h3 className="text-xs font-bold text-white">How is Viability calculated?</h3>
-              <p className="text-white/80 leading-relaxed">
+              <p className="text-white leading-relaxed font-medium">
                 The score represents the percentage of 10,000 Monte Carlo draws where monthly net operating profit is positive and the capital investment is recovered within 36 months.
               </p>
             </div>
 
             <div className="p-3 rounded-xl bg-white/5 border border-white/10 space-y-1.5">
               <h3 className="text-xs font-bold text-white">Can I customize assumptions?</h3>
-              <p className="text-white/80 leading-relaxed">
+              <p className="text-white leading-relaxed font-medium">
                 Yes! You can adjust initial capital investment, average ticket size, daily operating hours, pedestrian density factor, and nearby competitor counts using the studio sliders.
               </p>
             </div>
 
             <div className="p-3 rounded-xl bg-white/5 border border-white/10 space-y-1.5">
               <h3 className="text-xs font-bold text-white">How do I share simulation results?</h3>
-              <p className="text-white/80 leading-relaxed">
+              <p className="text-white leading-relaxed font-medium">
                 Click &quot;Share&quot; in the studio to generate a shareable URL, or click &quot;CSV&quot; and &quot;PDF&quot; to download structured financial spreadsheets.
               </p>
             </div>
@@ -279,7 +291,7 @@ export default async function DashboardPage() {
         <section className="pt-4 border-t border-white/10" aria-label="Saved Projects">
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-sm font-bold font-serif text-white">My Saved Projects</h2>
-            <span className="text-xs font-mono text-white/70">{projects.length} Project(s)</span>
+            <span className="text-xs font-mono text-white font-medium">{projects.length} Project(s)</span>
           </div>
 
           {user ? (

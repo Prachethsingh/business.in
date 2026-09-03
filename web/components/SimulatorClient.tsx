@@ -817,28 +817,28 @@ function RealtimeResultsPanel({
             >
               {rate}%
             </span>
-            <span className="text-xs sm:text-sm font-display font-bold text-white/80 uppercase tracking-wider">
+            <span className="text-xs sm:text-sm font-display font-bold text-white uppercase tracking-wider">
               Viability Rate
             </span>
           </div>
-          <p className="text-xs sm:text-sm text-white/95 font-sans font-medium leading-relaxed max-w-md m-0">
+          <p className="text-xs sm:text-sm text-white font-sans font-medium leading-relaxed max-w-md m-0">
             {result.verdict}
           </p>
         </div>
 
         <div className="grid grid-cols-2 gap-3 min-w-[210px]">
           <div className="p-3.5 rounded-2xl bg-white/[0.06] border border-white/15 shadow-inner">
-            <span className="text-xs font-mono font-bold text-white/80 uppercase flex items-center gap-1.5">
+            <span className="text-xs font-mono font-bold text-white uppercase flex items-center gap-1.5">
               <FaMoneyBillWave className="text-[#00FF85]" /> Expected Profit
             </span>
             <p className="text-base sm:text-lg font-black font-mono text-white mt-1 mb-0">
               {paiseToRupeeLabel(result.expected.monthlyProfitPaise)}
-              <span className="text-xs font-normal text-white/70">/mo</span>
+              <span className="text-xs font-normal text-white">/mo</span>
             </p>
           </div>
 
           <div className="p-3.5 rounded-2xl bg-white/[0.06] border border-white/15 shadow-inner">
-            <span className="text-xs font-mono font-bold text-white/80 uppercase flex items-center gap-1.5">
+            <span className="text-xs font-mono font-bold text-white uppercase flex items-center gap-1.5">
               <FaHourglassHalf className="text-[#38BDF8]" /> Payback Time
             </span>
             <p className="text-base sm:text-lg font-black font-mono text-white mt-1 mb-0">
@@ -1075,7 +1075,7 @@ function FieldRange({
         step={step}
         value={value}
         onChange={(e) => onChange(Number(e.target.value))}
-        className="w-full accent-[#00FF85] cursor-pointer h-5 py-1 bg-transparent rounded-lg"
+        className="w-full accent-[#00FF85] cursor-pointer min-h-[32px] h-8 py-2 bg-transparent rounded-lg"
       />
     </div>
   );

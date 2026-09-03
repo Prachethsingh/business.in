@@ -48,7 +48,7 @@ export function UpgradeModal({ isOpen, onClose }: UpgradeModalProps) {
         {/* Close Button */}
         <button
           onClick={onClose}
-          className="absolute top-5 right-5 text-slate-400 hover:text-white transition-colors p-2 z-10"
+          className="absolute top-4 right-4 text-slate-200 hover:text-white transition-colors p-2 z-10 min-w-[36px] min-h-[36px] flex items-center justify-center rounded-xl bg-white/5 hover:bg-white/10"
           aria-label="Close modal"
         >
           <FaTimes size={18} />
@@ -60,7 +60,7 @@ export function UpgradeModal({ isOpen, onClose }: UpgradeModalProps) {
               <FaCheck />
             </div>
             <h2 className="text-2xl font-bold font-serif text-white">Upgrade Submitted!</h2>
-            <p className="text-sm text-slate-200 max-w-sm mx-auto">
+            <p className="text-sm text-slate-100 max-w-sm mx-auto">
               Your payment of <strong className="text-white">₹99</strong> is under automated verification. Your account will have unlimited simulations unlocked shortly.
             </p>
             <GlowButton variant="primary" size="md" onClick={onClose} className="mt-4">
@@ -76,7 +76,7 @@ export function UpgradeModal({ isOpen, onClose }: UpgradeModalProps) {
               </div>
               <div>
                 <h2 className="text-xl font-bold font-serif text-white">Upgrade to Pro</h2>
-                <p className="text-xs text-slate-300 font-sans">Instant access to full Bangalore location intelligence</p>
+                <p className="text-xs text-slate-100 font-sans">Instant access to full Bangalore location intelligence</p>
               </div>
             </div>
 
@@ -84,7 +84,7 @@ export function UpgradeModal({ isOpen, onClose }: UpgradeModalProps) {
             <div className="p-3.5 rounded-2xl bg-white/[0.04] border border-white/10 flex items-baseline justify-between mb-4">
               <div>
                 <span className="text-2xl font-bold font-mono text-white">₹99</span>
-                <span className="text-xs text-slate-300 ml-1">one-time payment</span>
+                <span className="text-xs text-slate-200 ml-1">one-time payment</span>
               </div>
               <span className="text-xs font-mono text-[#00FF85] bg-[#00FF85]/10 px-2.5 py-1 rounded-full border border-[#00FF85]/30 font-bold">
                 Special Launch Price
@@ -98,10 +98,10 @@ export function UpgradeModal({ isOpen, onClose }: UpgradeModalProps) {
                 <button
                   type="button"
                   onClick={() => setQrType("gpay")}
-                  className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-medium transition-all ${
+                  className={`flex items-center gap-1.5 px-3 py-2 min-h-[36px] rounded-xl text-xs font-medium transition-all ${
                     qrType === "gpay"
                       ? "bg-white text-black font-bold shadow-md shadow-white/10"
-                      : "bg-white/5 text-slate-400 hover:text-white hover:bg-white/10"
+                      : "bg-white/5 text-slate-200 hover:text-white hover:bg-white/10"
                   }`}
                 >
                   <SiGooglepay className="text-base" /> Google Pay
@@ -109,10 +109,10 @@ export function UpgradeModal({ isOpen, onClose }: UpgradeModalProps) {
                 <button
                   type="button"
                   onClick={() => setQrType("navi")}
-                  className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-medium transition-all ${
+                  className={`flex items-center gap-1.5 px-3 py-2 min-h-[36px] rounded-xl text-xs font-medium transition-all ${
                     qrType === "navi"
                       ? "bg-[#00FF85] text-black font-bold shadow-md shadow-[#00FF85]/20"
-                      : "bg-white/5 text-slate-400 hover:text-white hover:bg-white/10"
+                      : "bg-white/5 text-slate-200 hover:text-white hover:bg-white/10"
                   }`}
                 >
                   <FaMobileAlt /> UPI / Navi QR
@@ -124,13 +124,15 @@ export function UpgradeModal({ isOpen, onClose }: UpgradeModalProps) {
                 <div className="relative p-2.5 rounded-2xl bg-white shadow-xl">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
-                    src={qrType === "gpay" ? "/qr-gpay.jpg" : "/qr-navi.jpg"}
+                    src={qrType === "gpay" ? "/qr-gpay.webp" : "/qr-navi.webp"}
                     alt={qrType === "gpay" ? "Google Pay QR Scanner" : "UPI Payment QR Scanner"}
+                    width={192}
+                    height={192}
                     className="w-44 h-44 sm:w-48 sm:h-48 object-contain rounded-lg"
                   />
                   <div className="absolute inset-0 rounded-2xl border-2 border-[#00FF85]/40 pointer-events-none" />
                 </div>
-                <p className="mt-2.5 text-[11px] font-mono text-slate-300 text-center">
+                <p className="mt-2.5 text-[11px] font-mono text-slate-100 text-center font-medium">
                   Scan using Google Pay, PhonePe, Paytm, or any UPI app
                 </p>
               </div>
@@ -139,13 +141,13 @@ export function UpgradeModal({ isOpen, onClose }: UpgradeModalProps) {
             {/* UPI ID & Copy Box */}
             <div className="flex items-center justify-between p-2.5 rounded-xl bg-[#181818] border border-white/10 mb-4">
               <div className="flex items-center gap-2">
-                <span className="text-[11px] text-slate-400 font-mono">UPI ID:</span>
+                <span className="text-[11px] text-slate-200 font-mono font-medium">UPI ID:</span>
                 <span className="text-xs font-mono text-[#00FF85] font-semibold">{upiId}</span>
               </div>
               <button
                 type="button"
                 onClick={handleCopy}
-                className="px-2.5 py-1 rounded-lg bg-white/10 hover:bg-white/20 text-xs font-mono text-white flex items-center gap-1.5 transition-all"
+                className="px-3 py-2 min-h-[32px] rounded-lg bg-white/10 hover:bg-white/20 text-xs font-mono text-white flex items-center gap-1.5 transition-all"
               >
                 {copied ? <FaCheck className="text-[#00FF85]" /> : <FaCopy />}
                 {copied ? "Copied" : "Copy"}
