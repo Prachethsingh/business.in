@@ -160,7 +160,7 @@ export function StatsSection() {
             {/* Direct CTA */}
             <div className="pt-2">
               <Link
-                href="/analysis"
+                href="/dashboard"
                 className="w-full flex items-center justify-center gap-2 py-3 rounded-xl bg-white/10 hover:bg-[#00FF85] text-white hover:text-black font-mono text-xs font-bold transition-all duration-200 border border-white/15 hover:border-[#00FF85]"
               >
                 <span>Run Simulation for Your Location</span>

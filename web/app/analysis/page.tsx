@@ -35,7 +35,7 @@ export default function AnalysisWizardPage() {
     <div className="min-h-screen bg-[#0A0A0A] text-white flex flex-col justify-between">
       <Navbar />
 
-      <main className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10 w-full space-y-8">
+      <main className="w-full px-4 sm:px-6 lg:px-8 py-8 space-y-6">
         
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-white/15">
           <div>
@@ -45,15 +45,22 @@ export default function AnalysisWizardPage() {
             <h1 className="text-2xl sm:text-3xl font-bold font-serif text-white">
               7-Step Analytical Feasibility Wizard
             </h1>
-            <p className="text-xs text-[#E2E8F0] font-mono">
+            <p className="text-xs text-white font-mono">
               Step-by-step commercial location screening for Bengaluru micro-markets
             </p>
           </div>
 
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-3">
             <span className="text-xs font-mono text-[#00FF85] bg-[#00FF85]/10 px-3 py-1.5 rounded-xl border border-[#00FF85]/30">
               Step {currentStep} of {STEPS.length}
             </span>
+            <Link
+              href="/dashboard"
+              className="px-4 py-2 rounded-xl bg-[#00FF85] hover:bg-[#00FF85]/90 text-black font-bold font-mono text-xs flex items-center gap-1.5 transition-all shadow-md min-h-[38px]"
+            >
+              <span>Launch Fullscreen Studio</span>
+              <FaArrowRight size={10} />
+            </Link>
           </div>
         </div>
 
