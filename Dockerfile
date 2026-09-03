@@ -22,6 +22,7 @@ COPY . .
 
 ENV NEXT_TELEMETRY_DISABLED=1
 ENV NODE_ENV=production
+ENV DATABASE_URL="postgresql://neondb_owner:npg_WLX1dmBZcq6H@ep-patient-dawn-ayhhz3tw-pooler.c-5.us-east-2.aws.neon.tech/neondb?sslmode=require"
 
 # Generate Prisma Client and build application
 RUN cd web && npx prisma generate && npm run build
@@ -33,6 +34,11 @@ WORKDIR /app/web
 ENV NODE_ENV=production
 ENV PORT=10000
 ENV HOSTNAME="0.0.0.0"
+ENV DATABASE_URL="postgresql://neondb_owner:npg_WLX1dmBZcq6H@ep-patient-dawn-ayhhz3tw-pooler.c-5.us-east-2.aws.neon.tech/neondb?sslmode=require"
+ENV NEXT_PUBLIC_APP_URL="https://business-in.onrender.com"
+ENV BETTER_AUTH_SECRET="business-in-secure-secret-key-32-chars-long-2026"
+ENV BETTER_AUTH_URL="https://business-in.onrender.com"
+
 
 RUN groupadd --system --gid 1001 nodejs
 RUN useradd --system --uid 1001 -g nodejs -m nextjs
