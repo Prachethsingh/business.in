@@ -29,20 +29,6 @@ export function HeroSection() {
 
       
       <div className="relative z-10 max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 flex flex-col items-center text-center pt-24">
-        
-        <div
-          className="mb-4 inline-flex items-center gap-2 rounded-full px-4 py-2 text-xs font-bold uppercase tracking-widest bg-[#00FF85]/15 border border-[#00FF85]/40 text-[#00FF85]"
-        >
-          <span className="inline-block w-2 h-2 rounded-full bg-[#00FF85] animate-pulse" aria-hidden="true" />
-          AI-Powered Location Intelligence
-        </div>
-
-        
-        <div className="mb-6 text-xs font-mono text-white flex items-center gap-2">
-          <span>By <strong className="text-white underline decoration-[#00FF85]">BUSINESS.IN Research Team</strong></span>
-          <span>·</span>
-          <time dateTime="2026-08-30" className="text-[#00FF85] font-bold">Updated Aug 30, 2026</time>
-        </div>
 
         
         <h1
