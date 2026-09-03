@@ -1,10 +1,12 @@
 # Multi-stage production Dockerfile for Render and Cloud Platforms
-FROM node:20-alpine AS base
+FROM node:20-slim AS base
 
 # Step 1: Install dependencies
 FROM base AS deps
-RUN apk add --no-cache libc6-compat
 WORKDIR /app
+
+# Install openssl and build tools for native dependencies
+RUN apt-get update && apt-get install -y openssl python3 make g++ && rm -rf /var/lib/apt/lists/*
 
 # Copy root and web package files
 COPY package.json package-lock.json* ./
@@ -31,8 +33,11 @@ ENV NODE_ENV=production
 ENV PORT=10000
 ENV HOSTNAME="0.0.0.0"
 
-RUN addgroup --system --gid 1001 nodejs
-RUN adduser --system --uid 1001 nextjs
+# Install openssl in runner for Prisma runtime
+RUN apt-get update && apt-get install -y openssl && rm -rf /var/lib/apt/lists/*
+
+RUN groupadd --system --gid 1001 nodejs
+RUN useradd --system --uid 1001 -g nodejs nextjs
 
 # Copy built artifacts and dependencies
 COPY --from=builder /app/web/public ./public
