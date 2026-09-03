@@ -22,6 +22,10 @@ export const metadata: Metadata = {
   creator: "BUSINESS.IN Location Intelligence Research Team",
   publisher: "BUSINESS.IN",
   metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL ?? "https://business-in.onrender.com"),
+  other: {
+    "publish-date": "2026-08-30",
+    "article:published_time": "2026-08-30T00:00:00+05:30",
+  },
   icons: {
     icon: "/favicon.png",
     shortcut: "/favicon.png",

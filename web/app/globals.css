@@ -142,29 +142,29 @@ a { color: var(--blue); }
 }
 
 .gradient-text {
+  color: #00FF85;
   background: linear-gradient(135deg, #00FF85 0%, #1E90FF 50%, #FFD700 100%);
-  -webkit-background-clip: text !important;
-  background-clip: text !important;
-  -webkit-text-fill-color: transparent !important;
-  color: transparent !important;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
   display: inline;
 }
 
 .gradient-text-blue {
+  color: #00FF85;
   background: linear-gradient(135deg, #00FF85, #1E90FF);
-  -webkit-background-clip: text !important;
-  background-clip: text !important;
-  -webkit-text-fill-color: transparent !important;
-  color: transparent !important;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
   display: inline;
 }
 
 .gradient-text-cyan {
+  color: #38BDF8;
   background: linear-gradient(135deg, #00FF85, #38BDF8);
-  -webkit-background-clip: text !important;
-  background-clip: text !important;
-  -webkit-text-fill-color: transparent !important;
-  color: transparent !important;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
   display: inline;
 }
 

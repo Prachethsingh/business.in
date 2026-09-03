@@ -88,7 +88,7 @@ export function Footer() {
             &copy; {new Date().getFullYear()} BUSINESS.IN · Bengaluru Commercial Real Estate Intelligence.
           </div>
           <div>
-            Published: <time dateTime="2026-08-30" className="text-white font-semibold">August 30, 2026</time>
+            Published: <time dateTime="2026-08-30" itemProp="datePublished" className="text-white font-semibold">August 30, 2026</time>
           </div>
         </div>
       </div>

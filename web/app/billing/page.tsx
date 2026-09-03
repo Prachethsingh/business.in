@@ -376,7 +376,7 @@ export default function BillingPage() {
               {/* Scannable QR Container */}
               <div className="relative group p-3 bg-white rounded-2xl shadow-[0_0_30px_rgba(0,0,0,0.5)] border-4 border-[#00FF85]/40 transition-all hover:border-[#00FF85]">
                 <img
-                  src={activeQR === "gpay" ? "/qr-gpay.jpg" : "/qr-navi.jpg"}
+                  src={activeQR === "gpay" ? "/qr-gpay.webp" : "/qr-navi.webp"}
                   alt={activeQR === "gpay" ? "Google Pay UPI QR Code" : "Navi UPI QR Code"}
                   className="w-56 h-56 sm:w-64 sm:h-64 object-contain rounded-xl"
                   width={256}

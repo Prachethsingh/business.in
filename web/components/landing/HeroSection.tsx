@@ -30,7 +30,13 @@ export function HeroSection() {
       
       <div className="relative z-10 max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 flex flex-col items-center text-center pt-24">
 
-        
+        <div className="mb-4 inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/10 border border-white/20 text-xs font-mono text-white shadow-sm">
+          <span className="w-2 h-2 rounded-full bg-[#00FF85] animate-pulse" />
+          <span>Published: <time dateTime="2026-08-30" itemProp="datePublished" className="text-white font-bold">August 30, 2026</time></span>
+          <span className="text-white/60">·</span>
+          <span>Bengaluru Q3 Intel</span>
+        </div>
+
         <h1
           className="mb-6 leading-tight text-white font-serif text-[clamp(36px,7vw,80px)] font-bold tracking-tight"
         >
