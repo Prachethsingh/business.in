@@ -1,0 +1,16 @@
+{
+  "name": "BUSINESS.IN — Bengaluru Commercial Location Simulator",
+  "short_name": "BUSINESS.IN",
+  "description": "Monte Carlo location intelligence, commercial real estate feasibility, and footfall analysis for Bengaluru.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0A0A0A",
+  "theme_color": "#00FF85",
+  "icons": [
+    {
+      "src": "/favicon.ico",
+      "sizes": "64x64 32x32 24x24 16x16",
+      "type": "image/x-icon"
+    }
+  ]
+}
