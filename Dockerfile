@@ -37,7 +37,7 @@ ENV HOSTNAME="0.0.0.0"
 RUN apt-get update && apt-get install -y openssl && rm -rf /var/lib/apt/lists/*
 
 RUN groupadd --system --gid 1001 nodejs
-RUN useradd --system --uid 1001 -g nodejs nextjs
+RUN useradd --system --uid 1001 -g nodejs -m nextjs
 
 # Copy built artifacts and dependencies
 COPY --from=builder /app/web/public ./public
@@ -49,4 +49,5 @@ USER nextjs
 
 EXPOSE 10000
 
-CMD ["npx", "next", "start", "-p", "10000"]
+CMD ["node", "node_modules/next/dist/bin/next", "start", "-p", "10000"]
+
