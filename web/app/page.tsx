@@ -25,7 +25,8 @@ export const metadata: Metadata = {
       "Evaluate business locations in Bengaluru with Monte Carlo simulations, traffic intelligence, competitor analysis, and financial projections.",
     images: [
       {
-        url: "/og-image.png",
+        url: "https://business-in.onrender.com/og-image.png",
+        secureUrl: "https://business-in.onrender.com/og-image.png",
         width: 1200,
         height: 630,
         alt: "BUSINESS.IN — Bengaluru Commercial Location Simulator",
