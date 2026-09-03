@@ -1,4 +1,4 @@
-# Multi-stage production Dockerfile
+# Multi-stage production Dockerfile for Render and Cloud Platforms
 FROM node:20-alpine AS base
 
 # Step 1: Install dependencies
@@ -6,9 +6,10 @@ FROM base AS deps
 RUN apk add --no-cache libc6-compat
 WORKDIR /app
 
-COPY package*.json ./
-COPY web/package*.json ./web/
-RUN cd web && npm install --no-audit
+# Copy root and web package files
+COPY package.json package-lock.json* ./
+COPY web/package.json web/package-lock.json* ./web/
+RUN cd web && npm install
 
 # Step 2: Build the Next.js application
 FROM base AS builder
@@ -19,25 +20,28 @@ COPY . .
 ENV NEXT_TELEMETRY_DISABLED=1
 ENV NODE_ENV=production
 
-# Generate Prisma Client and build standalone output
+# Generate Prisma Client and build application
 RUN cd web && npx prisma generate && npm run build
 
 # Step 3: Production runner image
 FROM base AS runner
-WORKDIR /app
+WORKDIR /app/web
 
 ENV NODE_ENV=production
+ENV PORT=10000
 ENV HOSTNAME="0.0.0.0"
 
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
 
-COPY --from=builder /app/web/public ./web/public
-COPY --from=builder --chown=nextjs:nodejs /app/web/.next/standalone ./
-COPY --from=builder --chown=nextjs:nodejs /app/web/.next/static ./web/.next/static
+# Copy built artifacts and dependencies
+COPY --from=builder /app/web/public ./public
+COPY --from=builder --chown=nextjs:nodejs /app/web/.next ./.next
+COPY --from=builder --chown=nextjs:nodejs /app/web/node_modules ./node_modules
+COPY --from=builder /app/web/package.json ./package.json
 
 USER nextjs
 
-EXPOSE 8080 10000 3000
+EXPOSE 10000
 
-CMD ["sh", "-c", "if [ -f web/server.js ]; then node web/server.js; else node server.js; fi"]
+CMD ["npx", "next", "start", "-p", "10000"]
