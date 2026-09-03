@@ -79,11 +79,11 @@ export async function verifySession(): Promise<SessionUser | null> {
     void err;
   }
 
-  const store = await cookies();
-  const token = store.get(SESSION_COOKIE)?.value;
-  if (!token) return null;
-
   try {
+    const store = await cookies();
+    const token = store.get(SESSION_COOKIE)?.value;
+    if (!token) return null;
+
     const tokenHash = hashToken(token);
     const session = await db.session.findUnique({
       where: { tokenHash },
@@ -100,7 +100,8 @@ export async function verifySession(): Promise<SessionUser | null> {
       role: session.user.role,
       status: session.user.status,
     };
-  } catch {
+  } catch (err) {
+    console.error("[verifySession] error:", err);
     return null;
   }
 }
