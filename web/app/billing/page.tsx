@@ -19,7 +19,43 @@ import {
   FaSpinner,
   FaArrowRight,
   FaReceipt,
+  FaClock,
+  FaExclamationTriangle,
+  FaLock,
 } from "react-icons/fa";
+
+function validateUPIUTR(utr: string): { valid: boolean; reason?: string } {
+  const clean = utr.trim();
+  if (!/^\d{12}$/.test(clean)) {
+    return {
+      valid: false,
+      reason: `UTR must be exactly 12 numeric digits. You have entered ${clean.length} digit${clean.length === 1 ? "" : "s"}.`,
+    };
+  }
+  if (/^(.)\1{11}$/.test(clean)) {
+    return {
+      valid: false,
+      reason: "Invalid UTR: repetitive dummy numbers (e.g. 000000000000 or 111111111111) are rejected.",
+    };
+  }
+  const dummyPatterns = [
+    "123456789012",
+    "012345678901",
+    "987654321098",
+    "123456781234",
+    "000123456789",
+    "112233445566",
+    "121212121212",
+    "001122334455",
+  ];
+  if (dummyPatterns.includes(clean)) {
+    return {
+      valid: false,
+      reason: "Invalid UTR: test or sequential dummy reference numbers are not accepted.",
+    };
+  }
+  return { valid: true };
+}
 
 export default function BillingPage() {
   const { data: session, isPending: sessionPending } = useSession();
@@ -28,69 +64,60 @@ export default function BillingPage() {
   const [copiedVPA, setCopiedVPA] = useState(false);
   const [copiedAmount, setCopiedAmount] = useState(false);
   const [utr, setUtr] = useState("");
-  const [guestEmail, setGuestEmail] = useState("");
   const [orderId, setOrderId] = useState<string | null>(null);
-  const [loadingOrder, setLoadingOrder] = useState(false);
+  const [orderStatus, setOrderStatus] = useState<"NONE" | "PENDING" | "SUBMITTED" | "APPROVED" | "REJECTED">("NONE");
+  const [submittedUtr, setSubmittedUtr] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
-  const [submitted, setSubmitted] = useState(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
-  const [alreadyPro, setAlreadyPro] = useState(false);
+  const [isProUser, setIsProUser] = useState(false);
 
   const VPA = "prachethsingh@okaxis";
   const AMOUNT = "99.00";
   const UPI_INTENT_URL = `upi://pay?pa=${VPA}&pn=BUSINESS.IN&am=${AMOUNT}&cu=INR&tn=BUSINESS.IN%20Pro%20Lifetime`;
 
-  // Check if user already has Pro in localStorage or database
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      const localPro = localStorage.getItem("business_in_pro_unlocked");
-      if (localPro === "true") {
-        setAlreadyPro(true);
-      }
-    }
-
-    async function checkStatus() {
-      try {
-        const res = await fetch("/api/billing/status");
-        if (res.ok) {
-          const data = await res.json();
-          if (data.isPro) {
-            setAlreadyPro(true);
+  // Check user entitlement & order status from database
+  async function fetchBillingStatus() {
+    try {
+      const res = await fetch("/api/billing/status");
+      if (res.ok) {
+        const data = await res.json();
+        if (data.isPro) {
+          setIsProUser(true);
+          setOrderStatus("APPROVED");
+          if (typeof window !== "undefined") {
+            localStorage.setItem("business_in_pro_unlocked", "true");
           }
-          if (data.recentOrder) {
-            setOrderId(data.recentOrder.id);
-            if (data.recentOrder.status === "SUBMITTED" || data.recentOrder.status === "APPROVED") {
-              setSubmitted(true);
-              if (data.recentOrder.utr) {
-                setUtr(data.recentOrder.utr);
-              }
-            }
+        } else if (data.recentOrder) {
+          setOrderId(data.recentOrder.id);
+          setOrderStatus(data.recentOrder.status);
+          if (data.recentOrder.utr) {
+            setSubmittedUtr(data.recentOrder.utr);
           }
         }
-      } catch (e) {
-        // Silently continue
       }
+    } catch {
+      // Ignore network errors
     }
+  }
 
-    checkStatus();
+  useEffect(() => {
+    fetchBillingStatus();
   }, [session]);
 
-  // Create an order in backend when user is authenticated and clicks or views payment
+  // Create an order if user is signed in and doesn't have one
   async function initializeOrder() {
     if (orderId || !session?.user) return;
     try {
-      setLoadingOrder(true);
       const res = await fetch("/api/billing/orders", { method: "POST" });
       if (res.ok) {
         const data = await res.json();
         if (data.order?.id) {
           setOrderId(data.order.id);
+          setOrderStatus(data.order.status);
         }
       }
     } catch (e) {
       console.warn("Could not create pending order:", e);
-    } finally {
-      setLoadingOrder(false);
     }
   }
 
@@ -116,9 +143,15 @@ export default function BillingPage() {
     e.preventDefault();
     setErrorMsg(null);
 
+    if (!session?.user) {
+      setErrorMsg("Please sign in first to attach your Pro license to your account.");
+      return;
+    }
+
     const cleanUtr = utr.trim();
-    if (!cleanUtr || cleanUtr.length < 8) {
-      setErrorMsg("Please enter a valid UPI Reference / UTR number (at least 8 characters).");
+    const validation = validateUPIUTR(cleanUtr);
+    if (!validation.valid) {
+      setErrorMsg(validation.reason ?? "Invalid 12-digit UTR.");
       return;
     }
 
@@ -127,54 +160,39 @@ export default function BillingPage() {
     try {
       let activeId = orderId;
 
-      // If user is logged in and doesn't have an order yet, create one now
-      if (!activeId && session?.user) {
+      if (!activeId) {
         const orderRes = await fetch("/api/billing/orders", { method: "POST" });
         if (orderRes.ok) {
           const orderData = await orderRes.json();
           activeId = orderData.order?.id;
           setOrderId(activeId);
+        } else {
+          setErrorMsg("Could not initiate payment order. Please refresh and try again.");
+          setSubmitting(false);
+          return;
         }
       }
 
-      // Submit proof to backend if order exists
-      if (activeId) {
-        const proofRes = await fetch(`/api/billing/orders/${activeId}/proof`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ utr: cleanUtr }),
-        });
+      const proofRes = await fetch(`/api/billing/orders/${activeId}/proof`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ utr: cleanUtr }),
+      });
 
-        if (!proofRes.ok) {
-          const errData = await proofRes.json().catch(() => ({}));
-          if (errData.error === "INVALID_REQUEST_OR_DUPLICATE_UTR") {
-            setErrorMsg("This UTR has already been submitted or is invalid. Please double-check your receipt.");
-            setSubmitting(false);
-            return;
-          }
-        }
+      const resData = await proofRes.json().catch(() => ({}));
+
+      if (!proofRes.ok) {
+        setErrorMsg(resData.message || resData.error || "Submission rejected. Please check your UTR number.");
+        setSubmitting(false);
+        return;
       }
 
-      // Immediate local unlocking so user is not blocked
-      if (typeof window !== "undefined") {
-        localStorage.setItem("business_in_pro_unlocked", "true");
-        localStorage.setItem("business_in_pro_utr", cleanUtr);
-        if (activeId) {
-          localStorage.setItem("business_in_pro_order_id", activeId);
-        }
-      }
-
-      setSubmitted(true);
-      setAlreadyPro(true);
+      setSubmittedUtr(cleanUtr);
+      setOrderStatus("SUBMITTED");
+      setUtr("");
     } catch (err) {
       console.error("Submission error:", err);
-      // Fallback: still unlock locally so user gets immediate access
-      if (typeof window !== "undefined") {
-        localStorage.setItem("business_in_pro_unlocked", "true");
-        localStorage.setItem("business_in_pro_utr", cleanUtr);
-      }
-      setSubmitted(true);
-      setAlreadyPro(true);
+      setErrorMsg("Network error submitting proof. Please check your internet connection and try again.");
     } finally {
       setSubmitting(false);
     }
@@ -188,7 +206,7 @@ export default function BillingPage() {
         {/* Header */}
         <div className="text-center space-y-3">
           <span className="text-xs font-bold uppercase tracking-widest text-[#00FF85] font-mono px-3.5 py-1.5 rounded-full bg-[#00FF85]/10 border border-[#00FF85]/30 inline-flex items-center gap-1.5">
-            <FaShieldAlt className="text-[#00FF85]" /> Instant UPI Payment & Activation
+            <FaShieldAlt className="text-[#00FF85]" /> Official Bank Reconciled UPI
           </span>
           <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold font-serif text-white tracking-tight">
             Simple, Transparent Pricing
@@ -206,7 +224,7 @@ export default function BillingPage() {
               <div className="flex justify-between items-center">
                 <h3 className="text-xl font-bold font-serif text-white">Starter / Free</h3>
                 <span className="text-xs font-mono text-[#CBD5E1] px-2.5 py-1 rounded-full bg-white/5">
-                  Current Plan
+                  Current Tier
                 </span>
               </div>
               <div className="flex items-baseline gap-1">
@@ -321,7 +339,7 @@ export default function BillingPage() {
             {orderId && (
               <div className="px-3.5 py-1.5 rounded-xl bg-white/5 border border-white/10 text-xs font-mono text-slate-300 flex items-center gap-2 self-start sm:self-auto">
                 <span className="w-2 h-2 rounded-full bg-[#00FF85] animate-pulse"></span>
-                <span>Order: <strong className="text-white">{orderId.slice(-8).toUpperCase()}</strong></span>
+                <span>Order Ref: <strong className="text-white">{orderId.slice(-8).toUpperCase()}</strong></span>
               </div>
             )}
           </div>
@@ -429,115 +447,167 @@ export default function BillingPage() {
                 </div>
               </div>
 
-              {/* Submission State / Form */}
-              {submitted ? (
+              {/* Already Approved State */}
+              {orderStatus === "APPROVED" ? (
                 <div className="p-6 sm:p-8 rounded-2xl bg-[#00FF85]/10 border-2 border-[#00FF85]/40 space-y-5 text-center shadow-[0_0_30px_rgba(0,255,133,0.1)]">
-                  <FaCheckCircle className="text-4xl text-[#00FF85] mx-auto animate-bounce" />
+                  <FaCheckCircle className="text-4xl text-[#00FF85] mx-auto" />
                   <div className="space-y-1">
                     <h3 className="text-lg font-bold font-serif text-white">
-                      Payment Submitted Successfully!
+                      Pro Lifetime License Active!
                     </h3>
                     <p className="text-xs text-[#00FF85] font-mono">
-                      Pro Lifetime Features Have Been Unlocked Locally
+                      Your account has full unlimited access to all features.
                     </p>
-                  </div>
-
-                  <div className="p-4 rounded-xl bg-[#0F172A] border border-white/10 text-left space-y-2 font-mono text-xs">
-                    <div className="flex justify-between text-slate-400">
-                      <span>Order ID:</span>
-                      <strong className="text-white">{orderId ?? "ORD-PRO-99"}</strong>
-                    </div>
-                    <div className="flex justify-between text-slate-400">
-                      <span>UTR Reference:</span>
-                      <strong className="text-[#00FF85]">{utr}</strong>
-                    </div>
-                    <div className="flex justify-between text-slate-400">
-                      <span>Amount:</span>
-                      <span className="text-white font-bold">₹99.00</span>
-                    </div>
-                    <div className="flex justify-between text-slate-400">
-                      <span>Plan:</span>
-                      <span className="text-[#FFD700] font-bold">Pro Lifetime License</span>
-                    </div>
-                    <div className="flex justify-between text-slate-400">
-                      <span>Status:</span>
-                      <span className="text-[#00FF85]">Verified & Active</span>
-                    </div>
                   </div>
 
                   <Link href="/dashboard" className="block w-full">
                     <button className="w-full py-3.5 rounded-xl bg-[#00FF85] hover:bg-[#00FF85]/90 text-black font-bold font-mono text-sm transition-all shadow-lg flex items-center justify-center gap-2 min-h-[44px]">
-                      <span>Launch Simulator Studio (Pro Unlocked)</span>
+                      <span>Launch Simulator Studio</span>
                       <FaArrowRight size={12} />
                     </button>
                   </Link>
                 </div>
+              ) : orderStatus === "SUBMITTED" ? (
+                /* Submitted - Awaiting Admin Verification */
+                <div className="p-6 sm:p-8 rounded-2xl bg-amber-500/10 border-2 border-amber-500/40 space-y-5 text-center shadow-[0_0_30px_rgba(245,158,11,0.1)]">
+                  <div className="w-14 h-14 rounded-full bg-amber-500/20 text-amber-400 flex items-center justify-center mx-auto text-2xl border border-amber-500/30">
+                    <FaClock className="animate-spin" style={{ animationDuration: "8s" }} />
+                  </div>
+
+                  <div className="space-y-1">
+                    <h3 className="text-lg font-bold font-serif text-white">
+                      Payment Proof Submitted · Pending Verification
+                    </h3>
+                    <p className="text-xs text-amber-300 font-mono">
+                      Our finance desk reconciles incoming UPI bank credits within 15–30 minutes.
+                    </p>
+                  </div>
+
+                  <div className="p-4 rounded-xl bg-[#0F172A] border border-white/10 text-left space-y-2.5 font-mono text-xs">
+                    <div className="flex justify-between text-slate-400">
+                      <span>Order Reference:</span>
+                      <strong className="text-white">{orderId ?? "ORD-PRO-99"}</strong>
+                    </div>
+                    <div className="flex justify-between text-slate-400">
+                      <span>Submitted UTR:</span>
+                      <strong className="text-amber-400 tracking-wider">{submittedUtr}</strong>
+                    </div>
+                    <div className="flex justify-between text-slate-400">
+                      <span>Amount Paid:</span>
+                      <span className="text-white font-bold">₹99.00</span>
+                    </div>
+                    <div className="flex justify-between text-slate-400">
+                      <span>Verification Status:</span>
+                      <span className="text-amber-400 font-bold px-2 py-0.5 rounded bg-amber-500/20">
+                        Under Admin Review
+                      </span>
+                    </div>
+                  </div>
+
+                  <p className="text-[11px] text-slate-400 font-sans leading-relaxed">
+                    Once verified against our bank statement, your account will be permanently upgraded to Pro. You can refresh this page to check review status.
+                  </p>
+
+                  <button
+                    type="button"
+                    onClick={fetchBillingStatus}
+                    className="w-full py-3 rounded-xl bg-white/10 hover:bg-white/15 text-white font-mono text-xs font-bold transition-all border border-white/15 flex items-center justify-center gap-2 min-h-[40px]"
+                  >
+                    <FaClock size={12} />
+                    <span>Check Verification Status</span>
+                  </button>
+                </div>
               ) : (
+                /* Submission Form */
                 <form onSubmit={handleSubmitProof} className="space-y-4 p-6 rounded-2xl bg-[#161616] border border-white/10">
                   <div className="space-y-1">
                     <h3 className="text-sm font-bold font-mono text-white flex items-center gap-2">
-                      <FaReceipt className="text-[#00FF85]" /> Step 2: Enter Payment UTR Reference
+                      <FaReceipt className="text-[#00FF85]" /> Step 2: Enter 12-Digit UPI Reference (UTR)
                     </h3>
                     <p className="text-xs text-slate-400 font-sans">
-                      After completing the ₹99 transfer in your UPI app, enter the 12-digit UTR / Reference ID below:
+                      After completing the ₹99 payment in GPay / PhonePe / Paytm, enter the <strong>exact 12-digit numeric UTR</strong> from your receipt:
                     </p>
                   </div>
 
                   {errorMsg && (
-                    <div className="p-3 rounded-xl bg-red-500/10 border border-red-500/30 text-red-300 text-xs font-mono">
-                      {errorMsg}
+                    <div className="p-3.5 rounded-xl bg-red-500/15 border border-red-500/40 text-red-300 text-xs font-mono flex items-start gap-2">
+                      <FaExclamationTriangle className="text-red-400 mt-0.5 shrink-0" />
+                      <span>{errorMsg}</span>
                     </div>
                   )}
 
                   <div className="space-y-2">
-                    <input
-                      type="text"
-                      value={utr}
-                      onChange={(e) => setUtr(e.target.value)}
-                      placeholder="e.g. 428719823719"
-                      maxLength={24}
-                      className="w-full px-4 py-3 bg-[#181818] border border-white/20 rounded-xl text-sm font-mono text-white focus:outline-none focus:border-[#00FF85] placeholder:text-slate-600 tracking-wider"
-                      required
-                    />
-                    <div className="flex items-start gap-1.5 text-[11px] text-slate-400 font-sans leading-relaxed">
+                    <div className="relative">
+                      <input
+                        type="text"
+                        inputMode="numeric"
+                        pattern="[0-9]*"
+                        value={utr}
+                        onChange={(e) => {
+                          const digitsOnly = e.target.value.replace(/\D/g, "").slice(0, 12);
+                          setUtr(digitsOnly);
+                          setErrorMsg(null);
+                        }}
+                        placeholder="e.g. 428719823719"
+                        maxLength={12}
+                        className="w-full px-4 py-3 bg-[#181818] border border-white/20 rounded-xl text-base font-mono text-white focus:outline-none focus:border-[#00FF85] placeholder:text-slate-600 tracking-widest"
+                        required
+                      />
+                      <span className="absolute right-3 top-3.5 text-xs font-mono text-slate-400">
+                        {utr.length}/12
+                      </span>
+                    </div>
+
+                    <div className="flex justify-between items-center text-[11px] font-mono">
+                      <span className={utr.length === 12 ? "text-[#00FF85] font-bold" : "text-slate-400"}>
+                        {utr.length === 12 ? "✓ 12 of 12 digits entered" : `${12 - utr.length} digit${12 - utr.length === 1 ? "" : "s"} remaining`}
+                      </span>
+                    </div>
+
+                    <div className="flex items-start gap-1.5 text-[11px] text-slate-400 font-sans leading-relaxed pt-1">
                       <FaInfoCircle className="text-slate-400 mt-0.5 shrink-0" />
                       <span>
-                        Found in your GPay / PhonePe / Paytm payment receipt under <strong>"UPI Transaction ID"</strong> or <strong>"Google Transaction ID / UTR"</strong>.
+                        Found in your GPay / PhonePe / Paytm receipt under <strong>"UPI Transaction ID"</strong> or <strong>"Google Transaction ID / UTR"</strong> (strictly 12 numeric digits).
                       </span>
                     </div>
                   </div>
 
-                  {!session?.user && (
-                    <div className="p-3 rounded-xl bg-white/5 border border-white/10 space-y-1 text-xs">
-                      <span className="text-slate-400 block font-mono text-[11px]">
-                        Account Sync (Optional):
-                      </span>
-                      <p className="text-slate-300 text-[11px] font-sans">
-                        <Link href="/login?next=/billing" className="text-[#00FF85] underline font-medium">
-                          Sign in
-                        </Link>{" "}
-                        to attach your Pro lifetime entitlement permanently to your account across all devices.
+                  {!session?.user ? (
+                    <div className="p-4 rounded-xl bg-amber-500/10 border border-amber-500/30 space-y-2 text-xs">
+                      <div className="flex items-center gap-2 text-amber-400 font-bold font-mono">
+                        <FaLock /> Sign In Required to Submit Proof
+                      </div>
+                      <p className="text-slate-300 font-sans leading-relaxed">
+                        Please sign in to your account first so our finance desk can attach the Pro Lifetime entitlement directly to your user account.
                       </p>
+                      <Link href="/login?next=/billing" className="block pt-1">
+                        <button
+                          type="button"
+                          className="w-full py-2.5 rounded-lg bg-amber-500 hover:bg-amber-500/90 text-black font-mono font-bold text-xs transition-all min-h-[38px]"
+                        >
+                          Sign In to Submit UTR
+                        </button>
+                      </Link>
                     </div>
+                  ) : (
+                    <button
+                      type="submit"
+                      disabled={submitting || utr.length !== 12}
+                      className="w-full py-3.5 rounded-xl bg-[#00FF85] hover:bg-[#00FF85]/90 text-black font-bold font-mono text-xs transition-all shadow-lg flex items-center justify-center gap-2 min-h-[44px] disabled:opacity-40 disabled:cursor-not-allowed"
+                    >
+                      {submitting ? (
+                        <>
+                          <FaSpinner className="animate-spin" />
+                          <span>Submitting for Verification...</span>
+                        </>
+                      ) : (
+                        <>
+                          <FaCheck />
+                          <span>Submit UTR for Admin Verification</span>
+                        </>
+                      )}
+                    </button>
                   )}
-
-                  <button
-                    type="submit"
-                    disabled={submitting}
-                    className="w-full py-3.5 rounded-xl bg-[#00FF85] hover:bg-[#00FF85]/90 text-black font-bold font-mono text-xs transition-all shadow-lg flex items-center justify-center gap-2 min-h-[44px] disabled:opacity-50"
-                  >
-                    {submitting ? (
-                      <>
-                        <FaSpinner className="animate-spin" />
-                        <span>Verifying & Activating...</span>
-                      </>
-                    ) : (
-                      <>
-                        <FaCheck />
-                        <span>Submit Proof & Unlock Pro License</span>
-                      </>
-                    )}
-                  </button>
                 </form>
               )}
             </div>
