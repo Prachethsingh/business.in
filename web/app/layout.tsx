@@ -37,10 +37,11 @@ export const metadata: Metadata = {
       "Evaluate business locations in Bengaluru with Monte Carlo simulations, traffic intelligence, competitor analysis, and financial projections.",
     images: [
       {
-        url: "https://business.in/og-image.jpg",
+        url: "/og-image.png",
         width: 1200,
         height: 630,
-        alt: "BUSINESS.IN Dashboard",
+        alt: "BUSINESS.IN — Bengaluru Commercial Location Simulator",
+        type: "image/png",
       },
     ],
   },
@@ -49,7 +50,7 @@ export const metadata: Metadata = {
     title: "BUSINESS.IN — AI Business Location Decision Simulator",
     description:
       "Monte Carlo simulations, traffic intelligence, competitor analysis & financial projections for Bengaluru locations.",
-    images: ["https://business.in/og-image.jpg"],
+    images: ["/og-image.png"],
   },
   verification: {
     google: "google9eab329ee90bde56",
@@ -66,23 +67,23 @@ export default function RootLayout({
     "@type": "WebSite",
     name: "BUSINESS.IN",
     description: "AI-powered business location decision simulator for Bengaluru",
-    url: process.env.NEXT_PUBLIC_APP_URL ?? "https://business.in",
+    url: process.env.NEXT_PUBLIC_APP_URL ?? "https://business-in.onrender.com",
     author: {
       "@type": "Organization",
       name: "BUSINESS.IN Location Intelligence Research Team",
-      url: "https://business.in",
-      logo: "https://business.in/logo.png",
+      url: "https://business-in.onrender.com",
+      logo: "https://business-in.onrender.com/logo.png",
     },
     publisher: {
       "@type": "Organization",
       name: "BUSINESS.IN",
-      url: "https://business.in",
+      url: "https://business-in.onrender.com",
     },
     potentialAction: {
       "@type": "SearchAction",
       target: {
         "@type": "EntryPoint",
-        urlTemplate: "https://business.in/dashboard?q={search_term_string}",
+        urlTemplate: "https://business-in.onrender.com/dashboard?q={search_term_string}",
       },
       "query-input": "required name=search_term_string",
     },

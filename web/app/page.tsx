@@ -9,8 +9,36 @@ import { Footer } from "@/components/layout/Footer";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
+  title: "BUSINESS.IN — Bengaluru Commercial Location Simulator",
+  description:
+    "Evaluate business locations in Bengaluru with Monte Carlo simulations, traffic intelligence, competitor analysis, and financial projections.",
   alternates: {
     canonical: process.env.NEXT_PUBLIC_APP_URL ? `${process.env.NEXT_PUBLIC_APP_URL}/` : "https://business-in.onrender.com/",
+  },
+  openGraph: {
+    type: "website",
+    locale: "en_IN",
+    url: process.env.NEXT_PUBLIC_APP_URL ?? "https://business-in.onrender.com",
+    siteName: "BUSINESS.IN",
+    title: "BUSINESS.IN — Bengaluru Commercial Location Simulator",
+    description:
+      "Evaluate business locations in Bengaluru with Monte Carlo simulations, traffic intelligence, competitor analysis, and financial projections.",
+    images: [
+      {
+        url: "/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "BUSINESS.IN — Bengaluru Commercial Location Simulator",
+        type: "image/png",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "BUSINESS.IN — Bengaluru Commercial Location Simulator",
+    description:
+      "Evaluate business locations in Bengaluru with Monte Carlo simulations, traffic intelligence, competitor analysis, and financial projections.",
+    images: ["/og-image.png"],
   },
 };
 
