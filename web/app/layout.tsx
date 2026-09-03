@@ -22,6 +22,11 @@ export const metadata: Metadata = {
   creator: "BUSINESS.IN Location Intelligence Research Team",
   publisher: "BUSINESS.IN",
   metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL ?? "https://business-in.onrender.com"),
+  icons: {
+    icon: "/favicon.png",
+    shortcut: "/favicon.png",
+    apple: "/apple-touch-icon.png",
+  },
   openGraph: {
     type: "website",
     locale: "en_IN",
