@@ -57,7 +57,12 @@ export const metadata: Metadata = {
 };
 
 export default async function DashboardPage() {
-  const user = await requireUser();
+  let user = null;
+  try {
+    user = await requireUser();
+  } catch (err) {
+    console.warn("[dashboard] user session check failed:", err);
+  }
 
   let projects: Array<{
     id: string;

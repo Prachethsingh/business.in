@@ -47,7 +47,9 @@ RUN useradd --system --uid 1001 -g nodejs -m nextjs
 COPY --from=builder /app/web/public ./public
 COPY --from=builder --chown=nextjs:nodejs /app/web/.next ./.next
 COPY --from=builder --chown=nextjs:nodejs /app/web/node_modules ./node_modules
-COPY --from=builder /app/web/package.json ./package.json
+COPY --from=builder --chown=nextjs:nodejs /app/web/package.json ./package.json
+
+RUN chown -R nextjs:nodejs /app/web
 
 USER nextjs
 
