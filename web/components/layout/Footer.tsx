@@ -83,16 +83,9 @@ export function Footer() {
         </div>
 
         
-        <div className="pt-6 border-t border-white/20 flex flex-col sm:flex-row justify-between items-center gap-4 text-xs text-slate-200 font-mono font-medium">
+        <div className="pt-6 border-t border-white/20 text-xs text-slate-200 font-mono font-medium">
           <div>
             &copy; {new Date().getFullYear()} BUSINESS.IN · Bengaluru Commercial Real Estate Intelligence.
-          </div>
-          <div className="flex items-center gap-4">
-            <time dateTime="2026-08-30" className="text-white font-bold">
-              Publication Date: August 30, 2026
-            </time>
-            <span>·</span>
-            <span className="text-[#00FF85] font-bold">Status: Operational</span>
           </div>
         </div>
       </div>
